@@ -2,6 +2,7 @@ curate
 ======
 
 A bookmarking plugin for CraftCMS
+
 Requires the User package
 
 Features:
