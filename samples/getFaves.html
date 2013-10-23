@@ -1,0 +1,29 @@
+{#
+ # Homepage template
+ # ---------------
+ #
+ # This template gets loaded whenever someone access http://example.com
+ # with no URI, because it’s located in the root of your craft/templates/
+ # folder and it’s called index.html. Simple.
+ #}
+
+{% extends "_layout" %}
+
+{% block content %}
+
+	
+	<h2>Favorites </h2>
+
+	{% if user %}
+
+		{% set faves = craft.curate.getFavesByUserId(currentUser.id) %}
+
+     
+		
+		{% for fave in faves %}
+			<li><a href="{{ fave.url }}">{{ fave.title }}</a></li>
+		{% endfor %}
+
+	{% endif %}
+	
+{% endblock %}

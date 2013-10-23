@@ -1,0 +1,101 @@
+{#
+ # Add/ Remove
+ # ---------------
+ #
+ # Curate add/remove example
+ # this code sample assumes a layout with a "header" block between the <head> tags
+ #}
+
+{% extends "_layout" %}
+
+{% block header %}
+	{% includeJsResource "assets/lib/jquery-1.10.2.js" %}
+{% endblock %}
+
+{% block content %}
+
+	
+	<h2>Favorites </h2>
+
+	{% set curatejs %}
+		  
+		$(document).ready(function()
+		{
+
+			$(document).off('click', '.add_favorite');
+			$(document).on('click', '.add_favorite', function() {
+			    var theLink = $(this);
+			    toggle_fave(theLink, true)
+			});
+
+			$(document).off('click', '.remove_favorite');
+			$(document).on('click', '.remove_favorite', function() {
+			    var theLink = $(this);
+			    toggle_fave(theLink, false)
+			});
+
+		    if(typeof toggle_fave != 'function') {
+			
+		        function toggle_fave(theLink, doAdd) {
+		       	 	var inputId = theLink.attr('name');
+			        var oldText = theLink.html().toLowerCase();
+			        var datastr = 'favorite='+ doAdd + '&entryId='+inputId ;
+
+			        //            alert(datastr);
+			        // see what the old phrasing was for the word and change it to new
+					if (oldText == 'remove favorite') {
+			            newText = 'Add Favorite';
+			        } else {
+			            newText = 'Remove favorite';
+			        }    
+
+					{% set baseUrl = ''  %}
+
+			        if(doAdd==true) {
+			            var new_link = '<a href="#" class="unfave_' + ' '  + '" name="' + theLink.attr('name') + '">' + newText + '</a>';
+			  			 // the URL to post to 
+						 theUrl = '/actions/curate/userEntries/saveUserFave';
+			        } else {
+			            var new_link = '<a href="#" class="fave_' + ' '  +'" name="' + theLink.attr('name') + '">' + newText + '</a>';
+			  			theUrl = '/actions/curate/userEntries/deleteUserFave';  // the URL to post to 
+			        }
+
+					/*
+						logic to update number of faves would go here
+					*/
+
+			
+				      $.ajax(
+				             {
+				             type:'POST',
+				             url: "{{ baseUrl }}" + theUrl,
+				             data: datastr,
+				             success: function(data){
+				                // alert(JSON.stringify(data));
+				  		theLink.replaceWith(new_link);
+				            }
+				      });
+			    }
+		    }
+		});
+		
+		{% endset %}
+		{% includeJs curatejs %}
+
+
+	<h2>Latest Five Entries</h2>
+	<ul>
+		{% for entry in craft.entries.section('news').limit(5).find() %}
+
+			<li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
+			{% set isAFave = craft.curate.isFavedByUser(entry.id) %}
+	
+			{% if isAFave %}
+				<a class="remove_favorite" href="#" name="{{ entry.id }}">Remove Favorite</a>
+			{% else %}
+				<a class="add_favorite" href="#" name="{{ entry.id }}">Add Favorite</a>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	
+{% endblock %}

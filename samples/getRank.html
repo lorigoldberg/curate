@@ -1,0 +1,18 @@
+{#
+ # Rank template
+ # ---------------
+ #
+ # Curate Rank syntax
+ #}
+
+{% extends "_layout" %}
+
+{% block content %}
+	<h3> Rank </h3>
+	{% set faverank = craft.curate.getRank() %}
+
+	{% for rank in faverank %}
+		{{rank.entry.title}}: 
+		{{rank.total}} faves<br>
+	{% endfor %}
+{% endblock %}
