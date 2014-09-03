@@ -1,8 +1,5 @@
 <?php
-
 namespace Craft;
-
-Craft::requirePackage(CraftPackage::Users);
 
 /**
  *

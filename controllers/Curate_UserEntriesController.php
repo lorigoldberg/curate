@@ -1,8 +1,6 @@
 <?php
 namespace Craft;
 
-Craft::requirePackage(CraftPackage::Users);
-
 /**
  * Handles user/entries relationships
  */
