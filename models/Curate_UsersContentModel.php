@@ -1,8 +1,6 @@
 <?php
 namespace Craft;
 
-//Craft::requirePackage(CraftPackage::Users);
-
 /**
  * Curate user content model class
  *
