@@ -25,4 +25,13 @@ class CurateVariable
         
         return craft()->curate_usersContent->getRank();
     }
+
+    public function getTotal($entryId)
+    {   
+        if (empty($entryId)) {
+            return false;
+        }
+        
+        return craft()->curate_usersContent->getFaveCount($entryId);
+    }
 }
